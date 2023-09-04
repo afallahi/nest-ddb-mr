@@ -1,9 +1,13 @@
 service: nest-mr
 
+frameworkVersion: '3'
+
+useDotenv: true
+
 plugins:
   - serverless-plugin-optimize
-  - serverless-offline
   - serverless-dynamodb-local
+  - serverless-offline
 
 functions:
  app:
@@ -11,25 +15,31 @@ functions:
    events:
      - http:
          method: any
-         path: /{any+}
+         path: /{proxy+}
+         cors: true
+     - http:
+         method: any
+         path: /
+         cors: true
+
+package:
+  exclude:
+    - README.md
+    - .dynamodb/**
 
 provider:
   name: aws
   runtime: nodejs18.x
-  apiGateway:
-    shouldStartNameWithService: true
-
-  environment:
-    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
-    NODE_OPTIONS: --enable-source-maps --stack-trace-limit=1000
+  stage: dev
+  
   iam:
-    role:
+    role: 
       statements:
         - Effect: 'Allow'
-          Action:
+          Action: 
             - 'dynamodb:DescribeTable'
             - 'dynamodb:Query'
-            - 'dynamoddb:Scan'
+            - 'dynamodb:Scan'
             - 'dynamodb:GetItem'
             - 'dynamodb:PutItem'
             - 'dynamodb:UpdateItem'
@@ -37,42 +47,42 @@ provider:
 
           Resource: arn:aws:dynamodb:us-east-1:*:table/UsersTable
 
-custom:
-  esbuild:
-    bundle: true
-    minify: false
-    sourcemap: true
-    exclude: aws-sdk
-    target: node18
-    define: 'require.resolve: undefined'
-    platform: node
-    concurrency: 10
-
-  dynamodb:
-    start:
-      port: 5000
-      inMemory: true
-      migrate: true
-
-    stages: dev
-
-resources:
-  Resources:
-    UsersTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: UsersTable
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-
+custom: 
+    esbuild: 
+      bundle: true
+      minify: false
+      sourcemap: true
+      exclude: 
+        - aws-sdk
+      target: node18
+      define: 'require.resolve: undefined'
+      platform: node
+      concurrency: 10
     
+    dynamodb: 
+      start: 
+        port: 5000
+        inMemory: true
+        migrate: true
+      
+      stages: 
+        - dev
 
+resources: 
+    Resources: 
+      TodosTable: 
+        Type: AWS::DynamoDB::Table
+        Properties:
+          TableName: UsersTable
+          AttributeDefinitions: 
+              - AttributeName: id
+                AttributeType: S
+            
+          KeySchema: 
+              - AttributeName: id
+                KeyType: HASH
+          
+          ProvisionedThroughput: 
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+     
