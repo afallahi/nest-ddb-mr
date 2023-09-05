@@ -19,13 +19,13 @@ export class AppController {
     return await this.appService.createUser(user);
   }
 
-  // @Get(':id')
-  // async getUser(@Param() id: string): Promise<User> {
-  //   return await this.appService.getUser(id);
-  // }
+  @Get(':id')
+  async getUserById(@Param('id') id: string): Promise<User> {
+    return await this.appService.getUserById(id);
+  }
 
-  // @Delete(':id')
-  // async deleteUser@Param() id: string): Promise<any> {
-  //   return await this.appService.deleteUser(id);
-  // }
+  @Delete(':id')
+  async deleteUser(@Param('id') id: string): Promise<any> {
+    return await this.appService.deleteUser(id);
+  }
 }

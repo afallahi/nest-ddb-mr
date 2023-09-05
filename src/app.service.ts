@@ -3,6 +3,8 @@ import * as AWS from "aws-sdk";
 import { v4 as uuid } from "uuid";
 import User from "./interface";
 
+const usersTableName = "UsersTable";
+
 const dynamoDB = process.env.IS_OFFLINE
   ? new AWS.DynamoDB.DocumentClient({
       region: "localhost",
@@ -18,7 +20,7 @@ export class AppService {
     try {
       return dynamoDB
         .scan({
-          TableName: "UsersTable",
+          TableName: usersTableName, //process.env.USERS_TABLE_NAME, // "UsersTable",
         })
         .promise();
     } catch (e) {
@@ -34,7 +36,7 @@ export class AppService {
     try {
       return await dynamoDB
         .put({
-          TableName: "UsersTable",
+          TableName: usersTableName,
           Item: userObj,
         })
         .promise();
@@ -43,11 +45,11 @@ export class AppService {
     }
   }
 
-  async getUser(id: string): Promise<any> {
+  async getUserById(id: string): Promise<any> {
     try {
       return await dynamoDB
         .get({
-          TableName:  "UsersTable", //process.env.USERS_TABLE_NAME,
+          TableName:  usersTableName, //process.env.USERS_TABLE_NAME,
           Key: { id },
         })
         .promise();
@@ -56,20 +58,20 @@ export class AppService {
     }
   }
 
-  // async deleteUser(id: string): Promise<any> {
-  //   try {
-  //     return await dynamoDB
-  //       .delete({
-  //         TableName: "UsersTable",
-  //         Key: {
-  //           id: id,
-  //         },
-  //       })
-  //       .promise();
-  //   } catch (e) {
-  //     throw new InternalServerErrorException(e);
-  //   }
-  // }
+  async deleteUser(id: string): Promise<any> {
+    try {
+      return await dynamoDB
+        .delete({
+          TableName: usersTableName,
+          Key: {
+            id: id,
+          },
+        })
+        .promise();
+    } catch (e) {
+      throw new InternalServerErrorException(e);
+    }
+  }
 
   getHello(): string {
     return 'Hello World!';
