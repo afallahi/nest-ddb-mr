@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Body, NotFoundException } from '@nestjs/common';
 import User from '../interface';
 import { UserService } from './user.service';
 
@@ -18,7 +18,11 @@ export class UserController {
   
     @Get(':id')
     async getUserById(@Param('id') id: string): Promise<User> {
-      return await this.userService.getUserById(id);
+      const user = await this.userService.getUserById(id);
+        if (!user) {
+            throw new NotFoundException(`User with ID "${id}" not found`);
+        }
+        return user;
     }
   
     @Delete(':id')
