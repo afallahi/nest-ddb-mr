@@ -3,7 +3,7 @@ import * as AWS from "aws-sdk";
 import { v4 as uuid } from "uuid";
 import User from "../interface";
 
-const usersTableName = "UsersTable";
+const usersTableName = "UsersGlobalTable";
 
 const dynamoDB = process.env.IS_OFFLINE
   ? new AWS.DynamoDB.DocumentClient({

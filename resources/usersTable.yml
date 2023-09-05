@@ -17,7 +17,3 @@ Resources:
       ProvisionedThroughput: 
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
-
-  # Replicas:
-  #   - Region: us-east-1
-  #   - Region: us-west-2

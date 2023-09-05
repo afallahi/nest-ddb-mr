@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create DynamoDB Global Table with CloudFormation
+
+Parameters:
+  TableName:
+    Type: String
+    Description: DynamoDB Global Table Name
+    Default: UsersGlobalTable
+  ReplicaRegion1:
+    Type: String
+    Description: replica Region 1
+    Default: us-east-1
+  ReplicaRegion2:
+    Type: String
+    Description: replica Region 2
+    Default: us-west-1
+
+Resources:
+  UsersGlobalTable: 
+    Type: AWS::DynamoDB::GlobalTable
+    DeletionPolicy: Retain
+    Properties:
+      TableName: !Ref TableName
+      AttributeDefinitions: 
+          - AttributeName: id
+            AttributeType: S
+        
+      KeySchema: 
+          - AttributeName: id
+            KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+
+      Replicas:
+        - Region: !Ref ReplicaRegion1
+        # - Region: !Ref ReplicaRegion2
+
+Outputs:
+  GlobalTableName:
+    Description: Global Table Name
+    Value: !Ref UsersGlobalTable
