@@ -8,4 +8,5 @@
     - 'dynamodb:UpdateItem'
     - 'dynamodb:DeleteItem'
 
-  Resource: ${self:custom.usersTable.arn}
+  Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:*:table/UsersTable"
+  

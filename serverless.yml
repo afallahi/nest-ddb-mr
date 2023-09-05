@@ -49,20 +49,20 @@ custom:
       platform: node
       concurrency: 10
     
-    dynamodb: 
-      start: 
-        port: 5000
-        inMemory: true
-        migrate: true
+    # dynamodb: 
+    #   start: 
+    #     port: 5000
+    #     inMemory: true
+    #     migrate: true
       
-      stages: 
-        - dev
+    #   stages: 
+    #     - dev
 
-    usersTable:
-      name: UsersTable
-      arn: !GetAtt usersTable.Arn
+    # usersTable:
+    #   name: UsersTable
+    #   arn: !GetAtt usersTable.Arn
 
-resources: 
-    Resources: 
-      usersTable: ${file(resources/usersTable.yml):usersTable}
+# resources: 
+#     Resources: 
+#       usersTable: ${file(resources/usersTable.yml):usersTable}
      

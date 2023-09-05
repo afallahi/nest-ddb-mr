@@ -1,15 +1,23 @@
-usersTable: 
-  Type: AWS::DynamoDB::Table
-  Properties:
-    TableName: ${self:custom.usersTable.name}
-    AttributeDefinitions: 
-        - AttributeName: id
-          AttributeType: S
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create DynamoDB with CloudFormation
+
+Resources:
+  usersTable: 
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: UsersTable
+      AttributeDefinitions: 
+          - AttributeName: id
+            AttributeType: S
+        
+      KeySchema: 
+          - AttributeName: id
+            KeyType: HASH
       
-    KeySchema: 
-        - AttributeName: id
-          KeyType: HASH
-    
-    ProvisionedThroughput: 
-      ReadCapacityUnits: 1
-      WriteCapacityUnits: 1
+      ProvisionedThroughput: 
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+  # Replicas:
+  #   - Region: us-east-1
+  #   - Region: us-west-2
