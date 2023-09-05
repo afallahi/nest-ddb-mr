@@ -11,6 +11,8 @@ Multi-region serverless architecture with DynamoDB Global Tables, Lambda, CloudF
 
 ## Architecture
 
+![Screenshot](sls_mr_ddb.png)
+
 This is a Serverless architecture where NestJS REST APIs are implemented in AWS Lambda connected to DynamoDB NoSQL to store data. DynamoDB Global Tables replicated in multiple regions helps us to have a mult-region architecture with high availability.
 
 ## Stack
